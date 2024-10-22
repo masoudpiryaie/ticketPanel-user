@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.jsx
+import React, { useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-function App() {
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Departments from "./pages/Departments";
+import Tickets from "./pages/Tickets";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+// import Sidebar from "./Sidebar";
+// import Tickets from "./Tickets";
+// import Departments from "./Departments";
+const queryClient = new QueryClient();
+
+const App = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div className="flex" dir="rtl">
+          <Sidebar
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
+          <div className="flex-1 bg-gray-100">
+            <Header
+              isSidebarOpen={isSidebarOpen}
+              setIsSidebarOpen={setIsSidebarOpen}
+            />
+            <div className="flex-grow p-4">
+              <Routes>
+                <Route path="/tickets" element={<Tickets />} />
+                <Route path="/departments" element={<Departments />} />
+                {/* Add more routes here as needed */}
+              </Routes>
+            </div>
+          </div>
+        </div>
+      </Router>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
