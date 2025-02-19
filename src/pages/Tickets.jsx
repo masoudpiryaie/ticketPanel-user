@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import NewTicketModal from '../components/NewTicketModal';
+import axios from 'axios';
 
 const Tickets = () => {
     const navigate = useNavigate();
@@ -11,9 +12,17 @@ const Tickets = () => {
 
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
-
+    const siteUrl = 'https://daroomokamel.ir/plugintest/wp-json/Nv-clientTickets/v1'
     const handleFormSubmit = async (formData) => {
         try {
+            let api = siteUrl + '/tickets'
+            const formDataInput = new FormData()
+            formDataInput.append('Ticket_department', formData.departmentId)
+            formDataInput.append('Ticket_title', formData.subject)
+            formDataInput.append('msg', formData.message)
+            formDataInput.append('attachment', formData.attachment)
+
+            const resp = axios.post(api, formDataInput)
             // Simulate an API request
             console.log('Sending ticket data:', formData);
 

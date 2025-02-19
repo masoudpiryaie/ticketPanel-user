@@ -3,41 +3,47 @@ import axios from "axios";
 // Create a custom Axios instance
 const fetchApi = axios.create({
   baseURL: "https://daroomokamel.ir/plugintest/wp-json", // Replace with your actual API base URL
-  timeout: 10000, // Optional: You can set a timeout for the request
+  timeout: 10000, // Optional: Timeout in milliseconds
 });
 
-// Request interceptor to add headers, like Authorization
+// Request interceptor to add the WordPress nonce and token to headers
 fetchApi.interceptors.request.use(
   (config) => {
-    // Add a token to headers if available (optional)
+    // Add WordPress nonce from localStorage
+    const wpNonce = localStorage.getItem("wpNonce"); // Assume nonce is stored here
+    if (wpNonce) {
+      config.headers["X-WP-Nonce"] = wpNonce;
+    }
+
+    // Optional: Add Bearer token for additional auth, if needed
     const token = localStorage.getItem("token");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
 
-    // You can add more custom headers here if needed
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor for handling errors globally
+// Response interceptor for global error handling
 fetchApi.interceptors.response.use(
-  (response) => {
-    // You can handle the response data here, if necessary
-    return response;
-  },
+  (response) => response,
   (error) => {
-    // You can handle global error messages or specific status codes here
     if (error.response) {
-      // Handle 401 Unauthorized
-      if (error.response.status === 401) {
-        // For example, log out the user or redirect to login page
-        console.log("Unauthorized! Please log in again.");
+      switch (error.response.status) {
+        case 401:
+          console.error("Unauthorized! Please log in again.");
+          break;
+        case 403:
+          console.error("Forbidden! Check your permissions.");
+          break;
+        case 500:
+          console.error("Server error! Try again later.");
+          break;
+        default:
+          console.error("Error:", error.response.data);
       }
-      // Handle other status codes
     }
     return Promise.reject(error);
   }

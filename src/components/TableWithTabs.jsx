@@ -36,10 +36,10 @@ const TableWithTabs = () => {
     const fetchTicketData = async () => {
         const response = await fetchApi.get('Nv-adminTickets/v1/tickets', {
             params: {
-                search: filters.search,
-                phoneNumber: filters.phoneNumber,
                 page,
                 pageSize,
+                search: filters.search,
+                phoneNumber: filters.phoneNumber,
                 departId,
                 statusId: activeTab.statusId
             }
