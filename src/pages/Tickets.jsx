@@ -17,13 +17,12 @@ const Tickets = () => {
     // const siteUrl = 'https://daroomokamel.ir/plugintest/wp-json/Nv-clientTickets/v1'
     // let Home_URL = window?.nvApiSettings?.home;
 
+
+
+
     const handleFormSubmit = async (formData) => {
         try {
-            // <<<<<<< HEAD
-            // let api = siteUrl + '/tickets'
-            // =======
             let api = Home_URL + 'wp-json/Nv-clientTickets/v1/tickets'
-            // >>>>>>> a1a6d3ceafdf7ea8ea4fa16793e97edcf11d4b67
             const formDataInput = new FormData()
             formDataInput.append('Ticket_department', formData.departmentId)
             formDataInput.append('Ticket_title', formData.subject)
@@ -43,19 +42,20 @@ const Tickets = () => {
 
     return (
         <div className="container mx-auto my-4 p-4" dir="rtl">
-            {/* <button
+            <button
                 className='rounded-md bg-gray-700 px-6 py-2 text-white my-6'
                 onClick={handleOpenModal}
             >
                 <FontAwesomeIcon icon={faPlus} />
                 <span className='px-2'>تیکت جدید</span>
-            </button> */}
 
-            {/* <NewTicketModal
+            </button>
+
+            <NewTicketModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 onSubmit={handleFormSubmit}
-            /> */}
+            />
             <TableWithTabs />
         </div>
     );

@@ -4,14 +4,11 @@ import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 // import fetchApi from '../services/FetchApi';
 import { Form } from 'react-router-dom';
 import axios from 'axios';
-// import fetchApi from '../services/FetchApi';
-// import { Form } from 'react-router-dom';
-// import axios from 'axios';
+
 
 const TicketDetailsModal = ({ ticketId, show, onClose }) => {
     // const siteUrl = 'https://daroomokamel.ir'
 
-    // const siteUrl = 'https://daroomokamel.ir'
 
     const [ticketData, setTicketData] = useState(null);
     const [newMessage, setNewMessage] = useState('');
@@ -25,13 +22,18 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
     let Home_URL = window?.nvApiSettings?.home;
     // let Home_URL = "https://daroomokamel.ir/plugintest/"
 
+
+
+    // let Home_URL = window?.nvApiSettings?.home;
+    // let Home_URL = "https://daroomokamel.ir/plugintest/"
     // Fetch the ticket details and messages
     useEffect(() => {
         const fetchTicketData = async () => {
             try {
                 if (ticketId && show) {
                     console.log('Fetching ticket data with:', { ticketId, show });
-                    const response = await axios.get(Home_URL + `wp-json/Nv-adminTickets/v1/tickets/${ticketId}`);
+
+                    const response = await axios.get(Home_URL + `wp-json/Nv-clientTickets/v1/tickets/${ticketId}`);
                     console.log('Response received:', response.data);
                     setTicketData(response.data);
                     setIsWrite(response.data.ticketInfo.client_id)
@@ -49,10 +51,14 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
 
 
 
+    // const handleAddMessage = async () => {
+    //     if (newMessage.trim()) {
+    //         setIsSubmitting(true);
+    //         let api = Home_URL + 'wp-json/Nv-adminTickets/v1/tickets/'
     const handleAddMessage = async () => {
         if (newMessage.trim()) {
             setIsSubmitting(true);
-            let api = Home_URL + 'wp-json/Nv-adminTickets/v1/tickets/'
+            let api = Home_URL + 'wp-json/Nv-clientTickets/v1/tickets/'
             const formDataInput = new FormData()
             // formDataInput.append('Ticket_department', formData.departmentId)
             // formDataInput.append('Ticket_title', formData.subject)
@@ -65,6 +71,7 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
                 const updatedData = await axios.get(`${api + ticketId}`);
                 setTicketData(updatedData.data);
                 onClose()
+
             } catch (error) {
                 console.error('Error adding message:', error);
             } finally {
@@ -73,15 +80,6 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
         }
     };
 
-    // const handleChange = (e) => {
-    //     console.log('eeeeeeeeeeeeee', e)
-    //     setNewMessage(e.target.value)
-    //     const { name, value, files } = e.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: files ? files[0] : value,
-    //     }));
-    // };
 
     const handleChange = (e) => {
         console.log('eeeeeeeeeeeeee', e)
@@ -166,6 +164,8 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
                                         className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     />
                                 </div>
+
+
                             </div>
                             <div className="flex justify-end space-x-2 p-4 gap-2 border-t">
                                 <button
