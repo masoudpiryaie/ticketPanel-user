@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Tickets from "./pages/Tickets";
 import Departments from "./pages/Departments";
 
-import Tickets from "./pages/Tickets";
-import Departments from "./pages/Departments";
+// import Tickets from "./pages/Tickets";
+// import Departments from "./pages/Departments";
 
 const queryClient = new QueryClient();
 const nonce = window.wpData?.nonce;
