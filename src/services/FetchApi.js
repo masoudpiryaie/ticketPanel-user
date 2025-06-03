@@ -1,8 +1,9 @@
 import axios from "axios";
+let Home_URL = window?.nvApiSettings?.home;
 
 // Create a custom Axios instance
 const fetchApi = axios.create({
-  baseURL: "https://daroomokamel.ir/plugintest/wp-json", // Replace with your actual API base URL
+  baseURL: Home_URL + "wp-json", // Replace with your actual API base URL
   timeout: 10000, // Optional: Timeout in milliseconds
 });
 

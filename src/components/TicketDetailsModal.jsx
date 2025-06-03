@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
-import fetchApi from '../services/FetchApi';
+// import fetchApi from '../services/FetchApi';
 import { Form } from 'react-router-dom';
+import axios from 'axios';
 
 const TicketDetailsModal = ({ ticketId, show, onClose }) => {
-    const siteUrl = 'https://daroomokamel.ir'
+    // const siteUrl = 'https://daroomokamel.ir'
 
     const [ticketData, setTicketData] = useState(null);
     const [newMessage, setNewMessage] = useState('');
@@ -17,13 +18,15 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
 
     });
 
+    // let Home_URL = window?.nvApiSettings?.home;
+    let Home_URL = "https://daroomokamel.ir/plugintest/"
     // Fetch the ticket details and messages
     useEffect(() => {
         const fetchTicketData = async () => {
             try {
                 if (ticketId && show) {
                     console.log('Fetching ticket data with:', { ticketId, show });
-                    const response = await fetchApi.get(`Nv-adminTickets/v1/tickets/${ticketId}`);
+                    const response = await axios.get(Home_URL + `wp-json/Nv-clientTickets/v1/tickets/${ticketId}`);
                     console.log('Response received:', response.data);
                     setTicketData(response.data);
                     setIsWrite(response.data.ticketInfo.client_id)
@@ -43,16 +46,16 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
     const handleAddMessage = async () => {
         if (newMessage.trim()) {
             setIsSubmitting(true);
-            let api = siteUrl + `/plugintest/wp-json/Nv-adminTickets/v1/tickets/`
+            let api = Home_URL + 'wp-json/Nv-clientTickets/v1/tickets/'
             const formDataInput = new FormData()
             // formDataInput.append('Ticket_department', formData.departmentId)
             // formDataInput.append('Ticket_title', formData.subject)
             formDataInput.append('msg', formData.message)
             formDataInput.append('attachment', formData.attachment)
             try {
-                await fetchApi.post(`${api + ticketId}`, formDataInput);
+                await axios.post(`${api + ticketId}`, formDataInput);
                 setNewMessage('');
-                const updatedData = await fetchApi.get(`${api + ticketId}`);
+                const updatedData = await axios.get(`${api + ticketId}`);
                 setTicketData(updatedData.data);
 
             } catch (error) {
@@ -94,52 +97,50 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
                                 </button>
                             </div>
                             {/* Content */}
-                            <div className="flex-1 p-4 overflow-y-auto">
+                            <div className="flex-1 justify-end p-4 overflow-y-auto">
                                 <div className="mb-4">
                                     <h5 className="font-medium">نام مشتری: {ticketData.ticketInfo.clientName}</h5>
                                     <p>دپنارتمان: {ticketData.ticketInfo.department_title}</p>
                                     <p>وضعیت: {ticketData.ticketInfo.status}</p>
                                 </div>
-
-                                <h6 className="font-semibold">گفتگو</h6>
-                                <div className="flex flex-col space-y-3 mb-4">
-                                    {ticketData.messages.map((msg) => (
-                                        <div
-                                            key={msg.id}
-                                            className={`message p-2 rounded-md shadow-sm ${isWrite !== msg.user_id
-                                                ? 'bg-blue-100 text-right self-start'
-                                                : 'bg-gray-100 text-right self-end'
-                                                }`}
-                                        >
-                                            <p>{msg.body}</p>
-                                            {msg.attachmentURL && (
-                                                <a
-                                                    href={msg.attachmentURL}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-blue-600 hover:underline"
-                                                >
-                                                    <FontAwesomeIcon icon={faPaperclip} /> پیوست
-                                                </a>
-                                            )}
-                                            <small className="text-gray-500">{msg.date}</small>
-                                        </div>
-                                    ))}
+                                <div className='flex flex-col justify-between'>
+                                    <div className="flex flex-col space-y-3 mb-4">
+                                        <h6 className="font-semibold">گفتگو</h6>
+                                        {ticketData.messages.map((msg) => (
+                                            <div
+                                                key={msg.id}
+                                                className={`message p-2 rounded-md shadow-sm ${isWrite !== msg.user_id
+                                                    ? 'bg-blue-100 text-right self-start'
+                                                    : 'bg-gray-100 text-right self-end'
+                                                    }`}
+                                            >
+                                                <p>{msg.body}</p>
+                                                {msg.attachmentURL && (
+                                                    <a
+                                                        href={msg.attachmentURL}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-600 hover:underline"
+                                                    >
+                                                        <FontAwesomeIcon icon={faPaperclip} /> پیوست
+                                                    </a>
+                                                )}
+                                                <small className="text-gray-500">{msg.date}</small>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-
-                                {/* New message */}
-                                <div className="new-message mt-4">
+                            </div>
+                            {/* New message and Attachment Field at the top of the footer */}
+                            <div className="flex justify-end space-x-2 p-4 gap-2">
+                                <div className="flex-1">
                                     <textarea
                                         placeholder="پیام جدید را اضافه کنید"
                                         name="message"
                                         value={newMessage}
-                                        // onChange={(e) => setNewMessage(e.target.value)}
                                         onChange={handleChange}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border rounded-md mb-2"
                                     />
-                                </div>
-                                {/* Attachment Field */}
-                                <div>
                                     <label className="block text-sm font-medium text-gray-700">پیوست</label>
                                     <input
                                         type="file"
@@ -148,8 +149,8 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
                                         className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     />
                                 </div>
+
                             </div>
-                            {/* Footer */}
                             <div className="flex justify-end space-x-2 p-4 gap-2 border-t">
                                 <button
                                     type="button"
@@ -161,8 +162,7 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
                                 <button
                                     onClick={handleAddMessage}
                                     disabled={isSubmitting}
-                                    className={`h-10 px-3 rounded-md ${isSubmitting ? 'bg-gray-400' : 'bg-gray-600 hover:bg-gray-700'
-                                        } text-white`}
+                                    className={`h-10 px-3 rounded-md ${isSubmitting ? 'bg-gray-400' : 'bg-gray-600 hover:bg-gray-700'} text-white`}
                                 >
                                     {isSubmitting ? 'در حال ارسال...' : 'ارسال'}
                                 </button>
@@ -172,6 +172,7 @@ const TicketDetailsModal = ({ ticketId, show, onClose }) => {
                 </div>
             )}
         </>
+
     );
 
 };

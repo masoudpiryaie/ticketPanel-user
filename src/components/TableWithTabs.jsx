@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faHourglassHalf, faReply, faPauseCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import fetchApi from '../services/FetchApi';
+// import fetchApi from '../services/FetchApi';
 import CustomSelect from './CustomSelect';
 import TicketDetailsModal from './TicketDetailsModal'
 import Loader from './Loader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const TableWithTabs = () => {
     const [activeTab, setActiveTab] = useState({
@@ -33,8 +34,13 @@ const TableWithTabs = () => {
         { id: 6, name: "بسته شده", icon: faTimesCircle }
     ];
 
+    // let Home_URL = window?.nvApiSettings?.home;
+    let Home_URL = "https://daroomokamel.ir/plugintest/"
+    // let Home_URL = "https://daroomokamel.ir/plugintest";
+    let API_URL = Home_URL + "wp-json/Nv-clientTickets/v1/";
+
     const fetchTicketData = async () => {
-        const response = await fetchApi.get('Nv-adminTickets/v1/tickets', {
+        const response = await axios.get(API_URL + 'tickets', {
             params: {
                 page,
                 pageSize,
@@ -141,13 +147,7 @@ const TableWithTabs = () => {
                 >
                     جستجو
                 </button>
-                <CustomSelect
-                    placeholder="انتخاب دپارتمان"
-                    options={[{ id: 1, name: 'دپارتمان 1' }, { id: 2, name: 'دپارتمان 2' }]}
-                    value={departId}
-                    onChange={(value) => setDepartId(value)}
-                    className="border border-gray-500 rounded-md shadow-sm"
-                />
+
             </div>
 
             {/* Loader or Error */}
@@ -155,7 +155,7 @@ const TableWithTabs = () => {
             {/* {isError && <div className="text-center py-4 text-red-500">خطا در بارگذاری داده‌ها</div>} */}
 
             {/* Table Container */}
-            <div className="overflow-hidden rounded-lg shadow-lg border border-gray-500" style={{ height: '400px' }}>
+            <div className="rounded-lg overflow-y-scroll shadow-lg border border-gray-500" style={{ height: '500px' }}>
                 {/* Grid headers */}
                 <div className="grid grid-cols-6 p-5 m-4 rounded-lg shadow-lg border border-gray-500">
                     <div className="font-medium text-gray-700 px-2 py-1 text-center">شماره تیکت</div>
@@ -226,18 +226,7 @@ const TableWithTabs = () => {
                     show={showModal}
                     onClose={handleCloseModal}
                 />
-                // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                //     <div className="bg-white rounded-lg shadow-lg p-4 w-1/3">
-                //         <h2 className="text-lg font-bold mb-4">جزئیات تیکت {selectedTicketId}</h2>
-                //         {/* Include ticket details here */}
-                //         <button
-                //             onClick={handleCloseModal}
-                //             className="mt-4 px-4 py-2 bg-gray-700 text-white rounded"
-                //         >
-                //             بستن
-                //         </button>
-                //     </div>
-                // </div>
+
             )}
         </div>
     );

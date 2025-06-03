@@ -12,10 +12,12 @@ const Tickets = () => {
 
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
-    const siteUrl = 'https://daroomokamel.ir/plugintest/wp-json/Nv-clientTickets/v1'
+    // const siteUrl = 'https://daroomokamel.ir/plugintest/wp-json/Nv-clientTickets/v1'
+    let Home_URL = window?.nvApiSettings?.home;
+
     const handleFormSubmit = async (formData) => {
         try {
-            let api = siteUrl + '/tickets'
+            let api = Home_URL + 'wp-json/Nv-clientTickets/v1/tickets'
             const formDataInput = new FormData()
             formDataInput.append('Ticket_department', formData.departmentId)
             formDataInput.append('Ticket_title', formData.subject)

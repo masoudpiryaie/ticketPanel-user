@@ -11,7 +11,7 @@ const ComboDropdown = ({ apiUrl, onProductSelect }) => {
     const [loading, setLoading] = useState(false); // Loading state added
     const inputRef = useRef(null);
     const selectedItemRef = useRef(null); // New ref to track selected item
-
+    // let Home_URL = window?.nvApiSettings?.home;
     useEffect(() => {
         fetchInitialData();
     }, []);
@@ -107,7 +107,7 @@ const ComboDropdown = ({ apiUrl, onProductSelect }) => {
                     <div className="loader mx-auto my-2"></div>
                 </div>}
             {showDropdown && !loading && (
-                <ul className="absolute z-10 w-full bg-white shadow-lg max-h-80 min-h-10 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                <ul className="absolute z-10 w-full bg-white shadow-lg max-h-50 min-h-10 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     {results?.map((item, index) => (
                         <li
                             key={index}

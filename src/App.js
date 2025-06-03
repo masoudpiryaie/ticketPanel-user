@@ -8,7 +8,8 @@ import Tickets from "./pages/Tickets";
 import Departments from "./pages/Departments";
 
 const queryClient = new QueryClient();
-
+const nonce = window.wpData?.nonce;
+console.log("nonce", nonce);
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
