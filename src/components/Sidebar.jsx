@@ -15,7 +15,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 </div>
                 <ul className="mt-6 space-y-4 flex flex-col items-start w-full">
                     <li className="flex items-start w-full justify-start hover:bg-gray-700 p-2 transition-all duration-300">
-                        <Link to="/tickets" className="flex items-start w-full">
+                        <Link to='' className="flex items-start w-full">
                             <FaHome className="text-xl" />
                             <span
                                 aria-hidden={!isSidebarOpen}
