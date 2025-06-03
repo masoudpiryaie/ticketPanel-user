@@ -12,8 +12,8 @@ const NewTicketModal = ({ isOpen, onClose, onSubmit }) => {
         attachment: null,
         product: '',
     });
-    // let Home_URL = window?.nvApiSettings?.home;
-    let Home_URL = "https://daroomokamel.ir/plugintest/"
+    let Home_URL = window?.nvApiSettings?.home;
+    // let Home_URL = "https://daroomokamel.ir/plugintest/"
     // const apiUrl = 'https://daroomokamel.ir/plugintest/wp-json/Nv-adminTickets/v1/getusers'
     const apiUrl = Home_URL + 'wp-json/Nv-clientTickets/v1/userProducts';
 
